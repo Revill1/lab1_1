@@ -19,76 +19,52 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class OfferItem {
-
 	private Product product = new Product();
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public Money getMoney() {
+		return money;
+	}
+
+	public void setMoney(Money money) {
+		this.money = money;
+	}
+
+	public Discount getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Discount discount) {
+		this.discount = discount;
+	}
+
+	private Money money = new Money();
 
 	private Discount discount = new Discount();
 
-	public OfferItem(String productId, BigDecimal productPrice, String productName,
-			Date productSnapshotDate, String productType, int quantity) {
-		this(productId, productPrice, productName, productSnapshotDate, productType, quantity, null, null);
-	}
 
-	public OfferItem(String productId, BigDecimal productPrice, String productName,
-			Date productSnapshotDate, String productType, int quantity,
-			BigDecimal discount, String discountCause) {
-		this.product.setProductId(productId);
-		this.product.setProductPrice(productPrice);
-		this.product.setProductName(productName);
-		this.product.setProductSnapshotDate(productSnapshotDate);
-		this.product.setProductType(productType);
-
-		this.product.setQuantity(quantity);
-		this.discount.setDiscount(discount);
-		this.discount.setDiscountCause(discountCause);
-
+	public OfferItem(Product product, Money money, Discount discount) 
+	{
+		this.product = product;
+		this.money = money;
+		this.discount = discount;
+		
 		BigDecimal discountValue = new BigDecimal(0);
-		if (discount != null)
-			discountValue = discountValue.subtract(discount);
-
-		this.product.setTotalCost(productPrice
-				.multiply(new BigDecimal(quantity)).subtract(discountValue));
+		if (discount.getDiscount() != null)
+		{
+			discountValue = discountValue.subtract(discount.getDiscount());
+		}
+		
+		money.setTotalCost(product.getProductPrice().multiply(new BigDecimal(product.getQuantity())).subtract(discountValue));
 	}
 
-	public String getProductId() {
-		return product.getProductId();
-	}
-	
-	public BigDecimal getProductPrice() {
-		return product.getProductPrice();
-	}
-	
-	public String getProductName() {
-		return product.getProductName();
-	}
-	
-	public Date getProductSnapshotDate() {
-		return product.getProductSnapshotDate();
-	}
-	
-	public String getProductType() {
-		return product.getProductType();
-	}
-
-	public BigDecimal getTotalCost() {
-		return product.getTotalCost();
-	}
-
-	public String getTotalCostCurrency() {
-		return product.getCurrency();
-	}
-
-	public BigDecimal getDiscount() {
-		return discount.getDiscount();
-	}
-
-	public String getDiscountCause() {
-		return discount.getDiscountCause();
-	}
-
-	public int getQuantity() {
-		return product.getQuantity();
-	}
 
 	@Override
 	public int hashCode() {
